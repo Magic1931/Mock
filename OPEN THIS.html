@@ -1,0 +1,109 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>Burger Day</title>
+  <style>
+    body {
+      margin: 0;
+      background: #0b1d3a; /* classy dark navy */
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      height: 100vh;
+      flex-direction: column;
+      text-align: center;
+      color: #fff;
+    }
+
+    .envelope {
+      font-size: 100px;
+      cursor: pointer;
+      transition: transform 0.3s;
+    }
+    .envelope:hover {
+      transform: scale(1.1);
+    }
+
+    /* Burgers floating UP */
+    .burger {
+      position: absolute;
+      bottom: -10vh; /* start below screen */
+      font-size: 40px;
+      animation: floatUp 8s linear forwards;
+    }
+
+    @keyframes floatUp {
+      0%   { transform: translateY(0); opacity: 0; }
+      10%  { opacity: 1; }
+      100% { transform: translateY(-120vh); opacity: 0; }
+    }
+
+    /* Text styles */
+    h1 {
+      font-size: clamp(2rem, 5vw, 4rem);
+      margin: 0;
+      animation: glow 2s infinite alternate;
+    }
+    h2 {
+      font-size: clamp(1.1rem, 2.3vw, 2rem);
+      margin-top: .75rem;
+    }
+    @keyframes glow {
+      from { text-shadow: 0 0 10px #fff, 0 0 20px #a5c9ff; }
+      to   { text-shadow: 0 0 20px #fff, 0 0 40px #8ab4f8; }
+    }
+
+    /* Hide main screen initially */
+    #main-screen {
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <!-- ENVELOPE SCREEN -->
+  <div id="envelopeScreen">
+    <div class="envelope" onclick="openCard()">📩</div>
+    <p>Click to open</p>
+  </div>
+
+  <!-- MAIN SCREEN -->
+  <div id="main-screen" aria-live="polite">
+    <h1>🎉 Happy Burger Day! 🎉</h1>
+    <h2>More Birthdays to Come</h2>
+  </div>
+
+  <!-- AUDIO -->
+  <audio id="birthdaySong" src="Bday song.mp3"></audio>
+
+  <script>
+    function openCard() {
+      // Hide envelope, show card
+      document.getElementById("envelopeScreen").style.display = "none";
+      document.getElementById("main-screen").style.display = "block";
+
+      // Play music
+      const song = document.getElementById("birthdaySong");
+      song.play();
+
+      // Burgers animation
+      function createBurger() {
+        const burger = document.createElement("div");
+        burger.classList.add("burger");
+        burger.textContent = "🍔";
+        burger.style.left = Math.random() * 100 + "vw";
+        burger.style.fontSize = (30 + Math.random() * 40) + "px"; // random size
+        burger.style.animationDuration = (4 + Math.random() * 6) + "s"; // random speed
+        document.body.appendChild(burger);
+
+        // remove after animation ends
+        setTimeout(() => burger.remove(), 10000);
+      }
+
+      // Keep spawning burgers every 400ms
+      setInterval(createBurger, 400);
+    }
+  </script>
+</body>
+</html>
